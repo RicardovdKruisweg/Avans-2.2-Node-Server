@@ -1,0 +1,44 @@
+{
+  "name": "avans-2.2-spa",
+  "version": "1.0.0",
+  "description": "Single Page WebApplication for 2.2 Avans made in react",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "client": "npm start --prefix client",
+    "server": "nodemon server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\" ",
+    "test": "node node_modules/mocha/bin/_mocha ./tests/* --reporter spec --exit",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false  npm install --prefix client && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RicardovdKruisweg/avans-2.2-SPA.git"
+  },
+  "author": "Ricardo van de Kruisweg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RicardovdKruisweg/avans-2.2-SPA/issues"
+  },
+  "homepage": "https://github.com/RicardovdKruisweg/avans-2.2-SPA#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "concurrently": "^4.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-jwt": "^5.3.1",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.4.0",
+    "mocha": "^5.2.0",
+    "mongoose": "^5.3.14",
+    "react-router": "^4.3.1",
+    "rootpath": "^0.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.7"
+  }
+}
