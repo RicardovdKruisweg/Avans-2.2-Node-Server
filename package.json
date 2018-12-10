@@ -10,7 +10,7 @@
     "server": "nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\" ",
     "test": "node node_modules/mocha/bin/_mocha ./tests/* --reporter spec --exit",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false  npm start"
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
