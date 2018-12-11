@@ -9,18 +9,17 @@ const errorHandler = require('middleware/errorHandler');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(cors());
 
 // api routes
 app.use('/users', require('./api/routes/users'));
 app.use('/groups', require('./api/routes/groups'));
 
-
-
-app.use(cors());
-// use JWT auth to secure the api
 app.use(jwt());
-// global error handler
 app.use(errorHandler);
+// use JWT auth to secure the api
+// global error handler
+
 
 // Serve static assets if in production
 if(process.env.NODE_ENV === 'production') {
