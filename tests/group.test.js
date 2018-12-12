@@ -189,85 +189,11 @@ describe('group.js tests', _ => {
             .end((err, res) => {
                 if (err) throw err;
                 Group.findById( group._id ).then( group => {
-                    console.log(group);
+                    // Proves the group is deleted from the database...
+                    assert.strictEqual(group, null);
                     res.should.have.status(200);
                     done()
                 }).catch(err => console.log(err));
         });
     });
-
-
-    /*
-    it('POST /user/register - should not create a new user: Missing parameters', done => {
-        chai.request(app).post(`/users/register`).send({  }).end((err, res) => {
-            if (err) throw err;
-            // Should be handled with error handler and return 400
-            res.should.have.status(400);
-            done();
-        });
-    });
-
-    it('POST /user/authenticate - should login user and generate JWT token', done => {
-        chai.request(app).post(`/users/authenticate`).send({ username: testUser.username, password: testUser.password }).end((err, res) => {
-            if (err) throw err;
-            res.body.should.have.property('token');
-            token = res.body.token;
-            done();
-        });
-    });
-
-    it('POST /user/authenticate - should not login user password incorrect', done => {
-        chai.request(app).post(`/users/authenticate`).send({ username: testUser.username, password: '' }).end((err, res) => {
-            if (err) throw err;
-            // Should be handled with error handler and return 400
-            res.should.have.status(400);
-            done();
-        });
-    });
-
-    it('PUT /users/:id - should update displayname', done => {
-        chai.request(app).put(`/users/${testUser.id}`)
-            .set( 'Authorization', `Bearer ${ token }` )
-            .send({ displayname: 'ricardotest', oldPassword: null, newPassword: null }).end((err, res) => {
-                if (err) throw err;
-                assert.strictEqual(res.body.displayname, 'ricardotest');
-                res.should.have.status(200);
-                done();
-            });
-    });
-
-    it('PUT /users/:id - should not update displayname missing token', done => {
-        chai.request(app).put(`/users/${testUser.id}`)
-            .send({ displayname: 'ricardotest', oldPassword: null, newPassword: null }).end((err, res) => {
-                if (err) throw err;
-                assert.strictEqual(res.body.message, 'Invalid Token');
-                res.should.have.status(401);
-                done();
-            });
-    });
-
-    it('DELETE /users/:id - should not dleete missing token', done => {
-        chai.request(app).del(`/users/${testUser.id}`)
-            .end((err, res) => {
-                if (err) throw err;
-                assert.strictEqual(res.body.message, 'Invalid Token');
-                res.should.have.status(401);
-                done();
-            });
-    });
-
-    it('DELETE /users/:id - should delete and be unable to authenticate afterwards', done => {
-        chai.request(app).del(`/users/${testUser.id}`)
-            .set( 'Authorization', `Bearer ${ token }` )
-            .end((err, res) => {
-                if (err) throw err;
-                res.should.have.status(200);
-                chai.request(app).post(`/users/authenticate`).send({ username: testUser.username, password: testUser.password }).end((err, res) => {
-                    if (err) throw err;
-                    // Proves that the user is deleted in the database
-                    res.should.have.status(400);
-                    done();
-                });
-            });
-    });*/
 });
