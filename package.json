@@ -10,7 +10,7 @@
     "server": "nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\" ",
     "test": "node node_modules/mocha/bin/_mocha ./tests/* --reporter spec --exit",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build --host 0.0.0.0"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,8 @@
     "mocha": "^5.2.0",
     "mongoose": "^5.3.14",
     "react-router": "^4.3.1",
-    "rootpath": "^0.1.2"
+    "rootpath": "^0.1.2",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.7"

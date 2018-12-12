@@ -20,18 +20,23 @@ function getUserGroups(req, res, next) {
 
 function getById (req, res, next){
   groupController.getById(req.params.id)
-      .then(group => group ? res.json(group) : res.sendStatus(404))
-      .catch(err => next(err));
+      .then( group => group ? res.json(group) : res.sendStatus(404) )
+      .catch( err => next(err) );
 }
 
 function comment (req, res, next) {
   groupController.comment(req.body, req.params.id)
-    .then( () => res.json( {} ) )
+    .then( group => res.json( group ) )
     .catch( err => next( err ) );
 }
 
-function create () {
-
+function create (req, res, next) {
+  groupController.create(req.body)
+    .then( group => {
+      console.log(group);
+      res.json(group);
+    } )
+    .catch( err => next(err) )
 }
 
 function update () {

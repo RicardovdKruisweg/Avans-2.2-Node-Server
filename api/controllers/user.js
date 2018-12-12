@@ -45,6 +45,8 @@ async function create(userParam) {
     if (userParam.password) {
         user.password = bcrypt.hashSync(userParam.password, 10);
     }
+    // Give user a fancy new icon
+    user.profilePicture = `https://api.adorable.io/avatars/285/${userParam.username}`;
 
     // save user
     await user.save();
@@ -65,8 +67,7 @@ async function update(id, userParam) {
     }
 
     // copy userParam properties to user
-    Object.assign(user, userParam);
-
+    Object.assign(user, userParam); 
     await user.save();
 }
 
