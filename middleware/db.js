@@ -1,14 +1,25 @@
 const config = require('config/config.json');
 const mongoose = require('mongoose');
-mongoose.connect(config.mongoURI, 
-  {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false
-  })
-  .then( () => console.log('MongoDB Connected...'))
-  .catch(err => console.log(err));
+
+// MongoDB
 mongoose.Promise = global.Promise;
+if(process.env.NODE_ENV === 'production'){
+    mongoose.connect(config.mongoURI,  { // https://mongoosejs.com/docs/deprecations.html
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false
+    }).then(_ => {
+        console.log('MongoDB connected!');
+    }).catch(console.error);
+} else {
+    mongoose.connect(config.mongoTestURI,  { // https://mongoosejs.com/docs/deprecations.html
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false
+    }).then(_ => {
+        console.log('MongoDB connected!');
+    }).catch(console.error);
+}
 
 module.exports = {
     User: require('../models/User'),

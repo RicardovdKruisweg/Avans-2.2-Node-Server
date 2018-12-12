@@ -32,17 +32,18 @@ function comment (req, res, next) {
 
 function create (req, res, next) {
   groupController.create(req.body)
-    .then( group => {
-      console.log(group);
-      res.json(group);
-    } )
+    .then( group => res.json(group) )
     .catch( err => next(err) )
 }
 
-function update () {
-
+function update (req, res, next) {
+  groupController.update(req.params.id, req.body)
+    .then ( group => res.json(group))
+    .catch ( err => next(err) );
 }
 
-function _delete () {
-  
+function _delete (req, res, next) {
+  groupController.delete(req.params.id)
+    .then( () => res.json({}))
+    .catch ( err => next(err) )
 }

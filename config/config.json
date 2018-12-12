@@ -1,4 +1,5 @@
 {
     "mongoURI": "mongodb://ricardo:PLlawse8mVYGFKjCUGqv@ds237373.mlab.com:37373/spa-individueel",
+    "mongoTestURI" : "mongodb://ricardo:welkom01@ds151355.mlab.com:51355/individueel-spa-test",
     "secret": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
 }

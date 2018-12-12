@@ -26,49 +26,59 @@ async function authenticate({ username, password }) {
 }
 
 async function getAll() {
-    return await User.find().select('-hash');
+    return await User.find().select('-password');
 }
 
 async function getById(id) {
-    return await User.findById(id).select('-hash');
+    return await User.findById(id).select('-password');
 }
 
 async function create(userParam) {
-    // validate
+    if(!userParam.username || !userParam.password) throw "Error missing paramenters";
+
     if (await User.findOne({ username: userParam.username })) {
         throw 'Username "' + userParam.username + '" is already taken';
     }
 
     const user = new User(userParam);
 
-    // hash password
     if (userParam.password) {
         user.password = bcrypt.hashSync(userParam.password, 10);
     }
-    // Give user a fancy new icon
+
     user.profilePicture = `https://api.adorable.io/avatars/285/${userParam.username}`;
 
-    // save user
     await user.save();
+    return user;
 }
 
 async function update(id, userParam) {
     const user = await User.findById(id);
 
-    // validate
     if (!user) throw 'User not found';
-    if (user.username !== userParam.username && await User.findOne({ username: userParam.username })) {
-        throw 'Username "' + userParam.username + '" is already taken';
+    // Check if old and new pasword are entered and hash them
+    if (userParam.oldPassword && userParam.newPassword) {
+        userParam.oldPassword = bcrypt.hashSync(userParam.oldPassword, 10);
+        userParam.newPassword = bcrypt.hashSync(userParam.newPassword, 10);
+        // Check if old password matches
+        if(user.password === userParam.oldPassword){
+            user.password = userParam.newPassword;
+        }
+        else throw 'Current password did not match';
     }
 
-    // hash password if it was entered
-    if (userParam.password) {
-        userParam.password = bcrypt.hashSync(userParam.password, 10);
+    if(userParam.displayname){
+        user.displayname = userParam.displayname
     }
 
-    // copy userParam properties to user
-    Object.assign(user, userParam); 
-    await user.save();
+    await user.save()
+    const userInfo = {
+        _id: user._id,
+        username: user.username,
+        profilePicture: user.profilePicture,
+        displayname: user.displayname
+    }
+    return userInfo;
 }
 
 async function _delete(id) {

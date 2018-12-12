@@ -16,7 +16,7 @@ module.exports = {
     getUserGroups,
     comment
 };
-// TODO: Write catches
+
 async function getUserGroups(id) {
   const group =  await Group.find({ $or : [{ 'members' : new ObjectId(id) }, { 'owner' : new ObjectId(id) }] });
   return group;
@@ -25,7 +25,7 @@ async function getUserGroups(id) {
 async function getById(id) {
   const group = await Group.findById(id).populate({
     path: 'messages.author',
-    select: 'displayname'
+    select: 'displayname profilePicture',
   });
   return group;
 }
@@ -34,18 +34,27 @@ async function comment (comment, groupId) {
   const group = await Group.findById(groupId)
   group.messages.push({ content: comment.content, author: comment.author});
   await group.save();
+  const comments = await Group.findById(group._id).populate({
+    path: 'messages.author',
+    select: 'displayname profilePicture',
+  });
+  return comments;
 }
 
 async function create (group) {
   const newGroup = Group(group);
-  newGroup.save()
+  await newGroup.save()
   return newGroup;
 }
 
-async function update () {
-
+async function update (groupId, groupname) {
+  const newname = groupname.name;
+  const group = await Group.findById(groupId)
+  group.name = newname;
+  await group.save();
+  return group;
 }
 
-async function _delete () {
-  
-}
+async function _delete (groupId) {
+  await Group.findByIdAndRemove(groupId);
+} 

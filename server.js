@@ -14,17 +14,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cors());
+app.use(jwt());
 
 // api routes
 app.use('/users', require('./api/routes/users'));
 app.use('/groups', require('./api/routes/groups'));
 
-app.use(jwt());
 app.use(errorHandler);
-// use JWT auth to secure the api
-// global error handler
 
-
+/* Old spa and server in one project
 // Serve static assets if in production
 if(process.env.NODE_ENV === 'production') {
   // set staic folder
@@ -34,7 +32,7 @@ if(process.env.NODE_ENV === 'production') {
       res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   })
 }
-
+*/
 const port = process.env.PORT || 5000;
 
 const io = socketIo(server);
@@ -42,15 +40,15 @@ const io = socketIo(server);
 // Check if commented then emit groupinfo
 io.on('connection', socket => {
   socket.on('comment', (comment, groupId) => {
-    console.log(comment);
-    groupController.comment(comment, groupId).then( () => {
-      groupController.getById(groupId).then( group => {
-        io.sockets.emit('new comment', group);
-      })
-      .catch( err => console.log(err));
-    })  
-    .catch(err => console.error(err));
+    if(comment.content && groupId){
+      groupController.comment(comment, groupId).then( group => {
+          io.sockets.emit('new comment', group);
+      })  
+      .catch(err => console.error(err));
+    }
   });
 });
-
+// Ricardo van de Kruisweg (2128627)
 server.listen(port, () => console.log(`Server started on ${port}`));    
+
+module.exports = server;
