@@ -7,14 +7,28 @@ router.post('/', create);
 router.post('/comment/:id', comment);
 router.get('/:id', getById);
 router.get('/user/:id', getUserGroups);
+router.get('/users/:id', getAvailableUsers);
+router.put('/users', addUserToGroup);
 router.put('/:id', update);
-router.delete('/:id', _delete);
+router.post('/:id', _delete);
 
 module.exports = router;
 
 function getUserGroups(req, res, next) {
   groupController.getUserGroups(req.params.id)
       .then(group => group ? res.json(group) : res.sendStatus(404))
+      .catch(err => next(err));
+}
+
+function addUserToGroup(req, res, next) {
+  groupController.addUserToGroup(req.body)
+    .then( group => group ? res.json(group) : res.sendStatus(404))
+    .catch( err => next(err))
+}
+
+function getAvailableUsers(req, res, next) {
+  groupController.getAvailableUsers(req.params.id)
+      .then(users => users ? res.json(users) : res.sendStatus(404))
       .catch(err => next(err));
 }
 

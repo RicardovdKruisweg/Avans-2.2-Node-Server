@@ -14,7 +14,9 @@ module.exports = {
     update,
     delete: _delete,
     getUserGroups,
-    comment
+    comment,
+    getAvailableUsers,
+    addUserToGroup
 };
 
 async function getUserGroups(id) {
@@ -24,6 +26,27 @@ async function getUserGroups(id) {
 
 async function getById(id) {
   const group = await Group.findById(id).populate({
+    path: 'messages.author',
+    select: 'displayname profilePicture',
+  });
+  return group;
+}
+
+async function getAvailableUsers(groupId){
+  const usersInGroup = await Group.findOne({ _id: groupId}, { members: 1, owner: 1});
+  let usersArray = usersInGroup.members;
+  usersArray.push(usersInGroup.owner);
+  const users = await User.find( { _id: { $nin: usersArray } } ).select('-password');
+  return users
+}
+
+async function addUserToGroup(body) {
+  const groupId = body.groupId;
+  const userId = body.userId;
+  const group = await Group.findOneAndUpdate(
+    { _id: groupId },
+    { $push: { members: userId } }
+  ).populate({
     path: 'messages.author',
     select: 'displayname profilePicture',
   });
