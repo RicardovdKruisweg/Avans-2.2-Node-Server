@@ -58,11 +58,9 @@ async function update(id, userParam) {
     if (!user) throw 'User not found';
     // Check if old and new pasword are entered and hash them
     if (userParam.oldPassword && userParam.newPassword) {
-        userParam.oldPassword = bcrypt.hashSync(userParam.oldPassword, 10);
-        userParam.newPassword = bcrypt.hashSync(userParam.newPassword, 10);
         // Check if old password matches
-        if(user.password === userParam.oldPassword){
-            user.password = userParam.newPassword;
+        if(bcrypt.compareSync(userParam.oldPassword, user.password)) {
+            user.password = bcrypt.hashSync(userParam.newPassword, 10);
         }
         else throw 'Current password did not match';
     }
