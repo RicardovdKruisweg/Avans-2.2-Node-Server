@@ -10,7 +10,7 @@ router.get('/user/:id', getUserGroups);
 router.get('/users/:id', getAvailableUsers);
 router.put('/users', addUserToGroup);
 router.put('/:id', update);
-router.post('/:id', _delete);
+router.delete('/:id', _delete);
 
 module.exports = router;
 
